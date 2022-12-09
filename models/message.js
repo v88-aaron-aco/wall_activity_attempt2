@@ -1,11 +1,10 @@
 const dbcon = require("./connection.js");
 const Mysql = require("mysql");
-
 class Message{
     static async create (user_id,{message}) {
         let response_data = { status: false, result: null, error: null };
         let query = Mysql.format(`
-                INSERT messages(user_id, message, created_at, updated_at) 
+                INSERT INTO messages(user_id, message, created_at, updated_at) 
                     VALUES(?,?,NOW(),NOW())`, [
                         user_id, 
                         message
@@ -14,21 +13,24 @@ class Message{
         return response_data.result; 
     }
 
-    static async retrieveMessages () {
+    static async retrieve () {
         let response_data = { status: false, result: null, error: null };
         let query = Mysql.format(`
             SELECT users.first_name, users.last_name, messages.* 
-            FROM jsmysql.messages 
+            FROM messages 
             INNER JOIN users 
-            ON users.id = messages.user_id`);
+            ON messages.user_id = users.id ORDER BY created_at DESC;`);
         response_data = await dbcon.executeQuery(query)
         return response_data; 
     }
-    
-    static async delete (message_id) {
+    static async delete ({message_id}) {
         let response_data = { status: false, result: null, error: null };
         let query = Mysql.format(`
-        DELETE Messages, Comments FROM Messages INNER JOIN Comments WHERE Messages.id = Comments.message_id  AND Messages.id = ?`,message_id);
+        DELETE messages, comments 
+        FROM messages 
+        INNER JOIN comments 
+        WHERE messages.id = comments.message_id 
+        AND messages.id = ?;` , message_id);
         response_data = await dbcon.executeQuery(query)
         return response_data; 
     }

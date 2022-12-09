@@ -29,6 +29,7 @@ class ViewController {
         let result = await User.create(this.#req.body);
         if(result){
            console.log('You may now log in!');
+           this.#res.redirect("/");
         }
     }
 

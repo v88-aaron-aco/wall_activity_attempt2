@@ -24,6 +24,14 @@ class Message{
         response_data = await dbcon.executeQuery(query)
         return response_data; 
     }
+    
+    static async delete (message_id) {
+        let response_data = { status: false, result: null, error: null };
+        let query = Mysql.format(`
+        DELETE Messages, Comments FROM Messages INNER JOIN Comments WHERE Messages.id = Comments.message_id  AND Messages.id = ?`,message_id);
+        response_data = await dbcon.executeQuery(query)
+        return response_data; 
+    }
 
     
 }

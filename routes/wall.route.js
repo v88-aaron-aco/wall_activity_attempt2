@@ -12,4 +12,7 @@ WallRoute.post("/login", (req, res) => { new ViewController(req, res).login(); }
 WallRoute.post("/createMessage", (req, res) => { new WallController(req, res).createMessage(); });
 WallRoute.post("/createComment", (req, res) => { new WallController(req, res).createComment(); });
 
+WallRoute.post("/deleteComment", (req, res) => { new WallController(req, res).deleteComment(); });
+WallRoute.post("/deleteMessage", (req, res) => { new WallController(req, res).deleteMessage(); });
+
 module.exports = WallRoute;

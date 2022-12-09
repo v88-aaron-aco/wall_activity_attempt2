@@ -26,30 +26,54 @@
         <h2><%=messages[i].first_name%>, <%=messages[i].last_name%></h2>
         <p><%=messages[i].message%></p>
         <!-- Delete Message Start  -->
-        <% if(data.id === messages[i].user_id){ %>
-        <form action="/deleteMessage" method="post">
+            <% if(data.id === messages[i].user_id){ %>
+            <form action="/deleteMessage" method="post">
+                <input
+                    type="hidden"
+                    name="message_id"
+                    value="<%=messages[i].id%>"
+                />
+                <input type="submit" value="Delete" />
+            </form>
+            <% } %>
+        <!-- Delete Message End  -->
+        <!-- Write Comment Start  -->
+        <form action="/createComment" method="post">
             <input
-                type="hidden"
-                name="message_id"
-                value="<%=messages[i].id%>"
-            />
-            <input type="submit" value="Delete" />
+                    type="hidden"
+                    name="message_id"
+                    value="<%=messages[i].id%>"
+                />
+            <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Write Comment"></textarea>
+            <input type="submit" value="Post Comment" />
         </form>
-        <% } %>
-        <!-- Delete Message End -->
-        <!-- Create Comments Start  -->
-        <form action="/createComment" method="POST">
-            <textarea
-                name="comment"
-                id="comment"
-                cols="30"
-                rows="10"
-                placeholder="Write a comment."
-            ></textarea>
-            <input type="submit" value="Post" />
-        </form>
-        <!-- Create Comments End -->
 
+        <!-- Write Comment End  -->
+        <!-- Messages End -->
+
+        <!--  Comments  -->
+            <% for (let j = 0; j < messages[i].comments.length; j++){%>
+            <h3>
+                <%=messages[i].comments[j].first_name%>,
+                <%=messages[i].comments[j].last_name%>
+            </h3>
+            <p><%=messages[i].comments[j].comment%></p>
+
+            <!-- Delete Comment Start  -->
+            <% if(data.id === messages[i].comments[j].user_id){ %>
+                <form action="/deleteComment" method="post">
+                    <input
+                        type="hidden"
+                        name="comment_id"
+                        value="<%=messages[i].comments[j].id%>"
+                    />
+                    <input type="submit" value="Delete" />
+                </form>
+            <% } %>
         <% } %>
+            <!-- Delete Comment End  -->
+        <!-- Comments End -->
+    <% } %>
+        <!-- Messages End -->
     </body>
 </html>

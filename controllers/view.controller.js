@@ -49,15 +49,20 @@ class ViewController {
             this.#res.redirect("/");
         }
     };
-
-    // register = async () => {
-    //     let new_user = new User();
-    //     let create_user_result = await new_user.create(this.#req.body);
-    //     if (result) {
-    //         console.log("You may now log in!");
-    //         this.#res.redirect("/");
-    //     }
-    // };
+    
+    /**
+     * DOCU: Function to process and create a user <br/>
+     * Triggered: When the register button is clicked in the registration form <br/>
+     * Last Updated Date: December 12, 2022.
+     * @async
+     * @function
+     * @author Aaron Aco
+     */
+    register_proccess = async () => {
+        let new_user = new User();
+        let create_user_result = await new_user.create(this.#req.body);
+        this.#res.redirect("/");
+    };
 
     // logout = async () => {
     //     delete this.#req.session.user;

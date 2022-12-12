@@ -11,24 +11,8 @@ class WallController {
     }
 
     wall = async () => {
-        let user_login = new User();
-        let [data] = await user_login.loadProfile(this.#req.session.userid);
-        let all_messages = await Message.retrieve();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-        for(let i = 0; i < all_messages.result.length; i++){
-            let d = new Date(all_messages.result[i].created_at).toLocaleDateString(undefined, options);
-            all_messages.result[i].created_at = d;
-            let all_comments = await Comment.retrieve(all_messages.result[i].id);
-            for(let j = 0; j < all_comments.result.length; j++){
-                let d = new Date(all_comments.result[i].created_at).toLocaleDateString(undefined, options);
-                all_comments.result[j].created_at = d;
-            }
-            all_messages.result[i]['comments'] = all_comments.result;
-        }
-
-
-        this.#res.render("wall.ejs", {userdata : data, all_messages: all_messages.result});
+        let user_data = this.#req.session.user;
+        this.#res.render("wall.ejs" , {user_data : user_data});
     }
     createMessage = async () => {
         let create_message = await Message.create(this.#req.session.userid, this.#req.body);

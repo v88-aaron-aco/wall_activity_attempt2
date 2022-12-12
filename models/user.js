@@ -90,7 +90,7 @@ class User {
 
         return response_data;
     }
-    
+
     /**
      * DOCU: Function to validate the email_address if already in use. <br/>
      * Triggered: When proccessing the registration data <br/>
@@ -112,13 +112,5 @@ class User {
 
         return response_data;
     }
-
-    //  async loadProfile (id) {
-    //     let response_data = { status: false, result: null, error: null };
-    //     let query = Mysql.format(`
-    //             SELECT users.id, users.first_name, users.last_name FROM users WHERE id = ?`, [id]);
-    //     response_data = await dbcon.executeQuery(query)
-    //     return  response_data.result;
-    // }
 }
 module.exports = User;

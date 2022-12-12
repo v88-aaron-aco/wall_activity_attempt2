@@ -42,14 +42,20 @@ class ViewController {
         }
 
         if (login_response_data.status && login_response_data.result.length) {
-            console.log("success", login_response_data);
+           console.log( login_response_data);
+           this.#req.session.user = {
+            uid: login_response_data.result[0].id,
+            first_name: login_response_data.result[0].first_name,
+            last_name: login_response_data.result[0].last_name
+           }
+            this.#req.session.save();
+            this.#res.redirect("/wall");
         } else {
-            console.log("failed", login_response_data);
             login_response_data.error = "Incorrect Credentials.";
             this.#res.redirect("/");
         }
     };
-    
+
     /**
      * DOCU: Function to process and create a user <br/>
      * Triggered: When the register button is clicked in the registration form <br/>
@@ -64,10 +70,10 @@ class ViewController {
         this.#res.redirect("/");
     };
 
-    // logout = async () => {
-    //     delete this.#req.session.user;
-    //     this.#res.redirect("/");
-    // };
+    logout = async () => {
+        delete this.#req.session.user;
+        this.#res.redirect("/");
+    };
 }
 
 module.exports = ViewController;

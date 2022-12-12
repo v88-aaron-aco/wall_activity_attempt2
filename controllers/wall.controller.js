@@ -11,7 +11,8 @@ class WallController {
     }
 
     wall = async () => {
-        let [data] = await User.loadProfile(this.#req.session.userid);
+        let user_login = new User();
+        let [data] = await user_login.loadProfile(this.#req.session.userid);
         let all_messages = await Message.retrieve();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 

@@ -9,7 +9,8 @@ class ViewController {
     }
 
     login = async () => {
-        let login = await User.retrieve(this.#req.body);
+        let user_login = new User();
+        let login_user_result = await user_login.retrieve(this.#req.body);
         if(login === false){
             console.log('Invalid credentials!');
             this.#res.redirect("/");
@@ -26,7 +27,8 @@ class ViewController {
     }
 
     register = async () => {
-        let result = await User.create(this.#req.body);
+        let new_user = new User();
+        let create_user_result = await new_user.create(this.#req.body);
         if(result){
            console.log('You may now log in!');
            this.#res.redirect("/");

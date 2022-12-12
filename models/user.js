@@ -1,6 +1,7 @@
 const dbcon = require("./connection.js");
 const Mysql = require("mysql");
 const sha1 = require("sha1");
+const { checkFields } = require("../helpers/index.helper");
 class User{
      async create ({email_address, first_name, last_name, password}) {
         let response_data = { status: false, result: null, error: null };

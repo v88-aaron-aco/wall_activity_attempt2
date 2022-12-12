@@ -11,13 +11,13 @@ class ViewController {
     login = async () => {
         let user_login = new User();
         let login_user_result = await user_login.retrieve(this.#req.body);
-        if(login === false){
+        if(login_user_result === false){
             console.log('Invalid credentials!');
             this.#res.redirect("/");
         }else{
             console.log('Login success!');
             this.#res.redirect("/wall");
-            this.#req.session.userid = login;
+            this.#req.session.userid = login_user_result;
             this.#req.session.save();
         }
     }

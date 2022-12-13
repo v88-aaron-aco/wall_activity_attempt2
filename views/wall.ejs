@@ -9,5 +9,28 @@
 <body>
     <h1>Welcome back, <%= user_data.first_name %> <%= user_data.last_name %></h1>
     <a href="logout">Logout</a>
+
+  <% console.log(wall_data[0]); %>
+
+  <ul>
+ <% for(let message_index in wall_data.result){
+        let post = wall_data.result[message_index];
+        let comments = (post.comments) ? JSON.parse(post.comments) : []; 
+        console.log(comments); %>
+    <li>
+        <h3><%= post.full_name %> - <%= post.created_at %></h3>
+        <p><%= post.message %></p>
+        <ul>
+            <% for(let comment_index in comments){ 
+                let comment = comments[comment_index]; %>
+            <li>
+                <h3><%= comment.full_name %> - <%= comment.created_at %></h3>
+        <p><%= comment.comment %></p>
+            </li>
+            <% } %>
+        </ul>
+    </li>
+<%}%>
+  </ul>
 </body>
 </html>

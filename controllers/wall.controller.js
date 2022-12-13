@@ -1,6 +1,5 @@
 const User = require("../models/user.js");
-const Message = require("../models/message.js");
-const Comment = require("../models/comment.js");
+const Wall = require("../models/wall.js");
 /**
  * @class WallController
  */
@@ -22,27 +21,30 @@ class WallController {
      */
     wall = async () => {
         let user_data = this.#req.session.user;
-        this.#res.render("wall.ejs" , {user_data : user_data});
+        let wall = new Wall();
+        let wall_data = await wall.retrieve();
+        console.log(wall_data);
+        this.#res.render("wall.ejs" , {user_data : user_data, wall_data : wall_data});
     }
-    createMessage = async () => {
-        let create_message = await Message.create(this.#req.session.userid, this.#req.body);
-        this.#res.redirect("/wall");
-    }
+    // createMessage = async () => {
+    //     let create_message = await Message.create(this.#req.session.userid, this.#req.body);
+    //     this.#res.redirect("/wall");
+    // }
 
-    createComment = async () => {
-        let create_comment = await Comment.create(this.#req.session.userid, this.#req.body);
-        this.#res.redirect("/wall");
-    }
+    // createComment = async () => {
+    //     let create_comment = await Comment.create(this.#req.session.userid, this.#req.body);
+    //     this.#res.redirect("/wall");
+    // }
 
-    deleteComment = async () => {
-        let delete_comment = await Comment.delete(this.#req.body);
-        this.#res.redirect("/wall");
-    }
+    // deleteComment = async () => {
+    //     let delete_comment = await Comment.delete(this.#req.body);
+    //     this.#res.redirect("/wall");
+    // }
 
-    deleteMessage = async () => {
-        let delete_message = await Message.delete(this.#req.body);
-        this.#res.redirect("/wall");
-    }
+    // deleteMessage = async () => {
+    //     let delete_message = await Message.delete(this.#req.body);
+    //     this.#res.redirect("/wall");
+    // }
 
 
 

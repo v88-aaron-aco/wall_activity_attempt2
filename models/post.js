@@ -1,12 +1,12 @@
 const DBConnection = require("./connection.js");
 const Mysql = require("mysql");
-class Wall{
+class Post{
 
     
      async retrieve () {
         let response_data = { status: false, result: null, error: null };
         let query = Mysql.format(`
-        SELECT messages.id AS message_id, messages.user_id, CONCAT(users.first_name, " ", users.last_name) AS full_name, messages.message, DATE_FORMAT(messages.created_at, "%M %D %Y") AS created_at,
+        SELECT messages.id AS message_id, messages.user_id, CONCAT(users.first_name, " ", users.last_name) AS full_name, messages.message, DATE_FORMAT(messages.created_at, "%M %D %Y") AS created_at, messages.created_at AS created_at_sort,
         (
             SELECT JSON_ARRAYAGG(
                 JSON_OBJECT(
@@ -22,23 +22,24 @@ class Wall{
             WHERE comments.message_id = messages.id 
         ) AS comments
         FROM messages 
-        INNER JOIN users ON users.id = messages.user_id ORDER BY created_at DESC;`);
+        INNER JOIN users ON users.id = messages.user_id ORDER BY created_at_sort DESC;`);
         response_data = await DBConnection.executeQuery(query);
 
         return response_data; 
     }
 
-    // static async create (user_id,{message}) {
-    //     let response_data = { status: false, result: null, error: null };
-    //     let query = Mysql.format(`
-    //             INSERT INTO messages(user_id, message, created_at, updated_at) 
-    //                 VALUES(?,?,NOW(),NOW())`, [
-    //                     user_id, 
-    //                     message
-    //                 ]);
-    //     response_data = await dbcon.executeQuery(query)
-    //     return response_data.result; 
-    // }
+     async create (user_id,{message}) {
+        let response_data = { status: false, result: null, error: null };
+        let query = Mysql.format(`
+                INSERT INTO messages(user_id, message, created_at, updated_at) 
+                    VALUES(?,?,NOW(),NOW())`, [
+                        user_id, 
+                        message
+                    ]);
+        response_data = await DBConnection.executeQuery(query);
+
+        return response_data; 
+    }
 
     // static async delete ({message_id}) {
     //     let response_data = { status: false, result: null, error: null };
@@ -54,4 +55,4 @@ class Wall{
 
     
 }
-module.exports = Wall;
+module.exports = Post;

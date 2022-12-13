@@ -1,5 +1,5 @@
 const User = require("../models/user.js");
-const Wall = require("../models/wall.js");
+const Post = require("../models/post.js");
 /**
  * @class WallController
  */
@@ -21,15 +21,15 @@ class WallController {
      */
     wall = async () => {
         let user_data = this.#req.session.user;
-        let wall = new Wall();
-        let wall_data = await wall.retrieve();
-        console.log(wall_data);
-        this.#res.render("wall.ejs" , {user_data : user_data, wall_data : wall_data});
+        let wall = new Post();
+        let posts = await wall.retrieve();
+        this.#res.render("wall.ejs" , {user_data : user_data, posts : posts});
     }
-    // createMessage = async () => {
-    //     let create_message = await Message.create(this.#req.session.userid, this.#req.body);
-    //     this.#res.redirect("/wall");
-    // }
+    createMessage = async () => {
+        let post = new Post()
+        let create_message = await post.create(this.#req.session.user.uid, this.#req.body);
+        this.#res.redirect("/wall");
+    }
 
     // createComment = async () => {
     //     let create_comment = await Comment.create(this.#req.session.userid, this.#req.body);

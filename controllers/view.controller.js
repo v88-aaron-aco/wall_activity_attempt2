@@ -5,7 +5,6 @@ const User = require("../models/user.js");
 class ViewController {
     #req;
     #res;
-
     constructor(req, res) {
         this.#req = req;
         this.#res = res;
@@ -19,7 +18,11 @@ class ViewController {
      * @author Aaron Aco
      */
     homepage = async () => {
-        this.#res.render("login.ejs");
+        if(this.#req.session.alert){
+            var alert =  this.#req.session.alert;
+            delete this.#req.session.alert;
+        }
+        this.#res.render("login.ejs", {alert : alert});
     };
 
     /**
@@ -36,13 +39,15 @@ class ViewController {
         let login_response_data = await user_login.retrieve(this.#req.body);
 
         if (!login_response_data.status) {
-            console.log("error", login_response_data);
+            this.#req.session.alert =  {
+                title: login_response_data.error,
+                message: login_response_data.result};
+            this.#req.session.save();
             this.#res.redirect("/");
             return;
         }
 
         if (login_response_data.status && login_response_data.result.length) {
-           console.log( login_response_data);
            this.#req.session.user = {
             uid: login_response_data.result[0].id,
             first_name: login_response_data.result[0].first_name,
@@ -52,6 +57,11 @@ class ViewController {
             this.#res.redirect("/wall");
         } else {
             login_response_data.error = "Incorrect Credentials.";
+            login_response_data.status = false;
+            this.#req.session.alert =  {
+                title: login_response_data.error,
+                message: login_response_data.result};
+            this.#req.session.save();
             this.#res.redirect("/");
         }
     };

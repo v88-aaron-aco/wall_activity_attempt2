@@ -77,6 +77,17 @@ class ViewController {
     register_proccess = async () => {
         let new_user = new User();
         let create_user_result = await new_user.create(this.#req.body);
+        if(create_user_result.status){
+            this.#req.session.alert =  {
+                title: "Success! You may now login!",
+                message: null};
+        }else{
+            this.#req.session.alert =  {
+                title: create_user_result.error,
+                message: create_user_result.result};
+        }
+        this.#req.session.save();
+        console.log(create_user_result);
         this.#res.redirect("/");
     };
 

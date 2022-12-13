@@ -9,6 +9,12 @@
 <body>
     <h1>Welcome back, <%= user_data.first_name %> <%= user_data.last_name %></h1>
     <a href="logout">Logout</a>
+    
+    <% if(alert){ %>
+        <p><%= alert.title %></p>
+<% for(let index in alert.message){ %>
+        <p><%= alert.message[index] %> </p>
+<% } }%>
 
     <form action="createMessage" method="post">
         <textarea name="message" id="message" cols="30" rows="10" placeholder="Write a message."></textarea>
@@ -18,8 +24,7 @@
   <ul>
  <% for(let message_index in posts.result){
         let post = posts.result[message_index];
-        let comments = (post.comments) ? JSON.parse(post.comments) : []; 
-        console.log(comments); %>
+        let comments = (post.comments) ? JSON.parse(post.comments) : []; %>
     <li>
         <h3><%= post.full_name %> - <%= post.created_at %></h3>
         <p><%= post.message %></p>

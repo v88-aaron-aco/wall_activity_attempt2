@@ -1,5 +1,6 @@
 const DBConnection = require("./connection.js");
 const Mysql = require("mysql");
+const { checkFields } = require("../helpers/index.helper");
 class Post{
 
     
@@ -28,29 +29,47 @@ class Post{
         return response_data; 
     }
 
-     async create (user_id,{message}) {
+     async create (user_id,form_data) {
         let response_data = { status: false, result: null, error: null };
-        let query = Mysql.format(`
-                INSERT INTO messages(user_id, message, created_at, updated_at) 
-                    VALUES(?,?,NOW(),NOW())`, [
-                        user_id, 
-                        message
-                    ]);
-        response_data = await DBConnection.executeQuery(query);
+        let check_fields = checkFields(
+            ["message"],
+            form_data
+        );
+        if (check_fields.status) {
+            let create_message_query = Mysql.format(`
+            INSERT INTO messages(user_id, message, created_at, updated_at) 
+                VALUES(?,?,NOW(),NOW())`, [
+                    user_id, 
+                    form_data.message
+                ]);
+            response_data = await DBConnection.executeQuery(create_message_query);
+
+        } else {
+            response_data = check_fields;
+        }
 
         return response_data; 
     }
 
-     async reply (user_id,{message_id,comment}) {
+     async reply (user_id,form_data) {
         let response_data = { status: false, result: null, error: null };
-        let query = Mysql.format(`
-                INSERT INTO comments(user_id,message_id, comment, created_at, updated_at)
-                    VALUES(?,?,?,NOW(),NOW())`, [
-                        user_id,
-                        message_id, 
-                        comment
-                    ]);
-        response_data = await DBConnection.executeQuery(query);
+        let check_fields = checkFields(
+            ["comment"],
+            form_data
+        );
+
+        if (check_fields.status) {
+            let create_comment_query = Mysql.format(`
+            INSERT INTO comments(user_id,message_id, comment, created_at, updated_at)
+                VALUES(?,?,?,NOW(),NOW())`, [
+                    user_id,
+                    form_data.message_id, 
+                    form_data.comment
+                ]);
+            response_data = await DBConnection.executeQuery(create_comment_query);
+        } else {
+            response_data = check_fields;
+        }
 
         return response_data; 
     }

@@ -20,20 +20,44 @@ class WallController {
      * @author Aaron Aco
      */
     wall = async () => {
+        if(this.#req.session.alert){
+            var alert =  this.#req.session.alert;
+            delete this.#req.session.alert;
+        }
         let user_data = this.#req.session.user;
         let wall = new Post();
         let posts = await wall.retrieve();
-        this.#res.render("wall.ejs" , {user_data : user_data, posts : posts});
+        this.#res.render("wall.ejs" , {user_data : user_data, posts : posts, alert: alert});
     }
     createMessage = async () => {
         let post = new Post();
         let create_message = await post.create(this.#req.session.user.uid, this.#req.body);
+        if(create_message.status){
+            this.#req.session.alert =  {
+                title: "Success! Your message has been posted!",
+                message: null};
+        }else{
+            this.#req.session.alert =  {
+                title: create_message.error,
+                message: create_message.result};
+        }
+        this.#req.session.save();
         this.#res.redirect("/wall");
     }
 
     createComment = async () => {
         let post = new Post();
         let create_comment = await post.reply(this.#req.session.user.uid, this.#req.body);
+        if(create_comment.status){
+            this.#req.session.alert =  {
+                title: "Success! Your comment has been posted!",
+                message: null};
+        }else{
+            this.#req.session.alert =  {
+                title: create_comment.error,
+                message: create_comment.result};
+        }
+        this.#req.session.save();
         this.#res.redirect("/wall");
     }
 

@@ -1,6 +1,9 @@
 const User = require("../models/user.js");
 const Message = require("../models/message.js");
 const Comment = require("../models/comment.js");
+/**
+ * @class WallController
+ */
 class WallController {
     #req;
     #res;
@@ -9,7 +12,14 @@ class WallController {
         this.#req = req;
         this.#res = res;
     }
-
+    /**
+     * DOCU: Function to render the wall view, fetch the user's datain session, and load all the messages and comments. <br/>
+     * Triggered: After successfull login. <br/>
+     * Last Updated Date: December 13, 2022.
+     * @async
+     * @function
+     * @author Aaron Aco
+     */
     wall = async () => {
         let user_data = this.#req.session.user;
         this.#res.render("wall.ejs" , {user_data : user_data});

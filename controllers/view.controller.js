@@ -70,6 +70,14 @@ class ViewController {
         this.#res.redirect("/");
     };
 
+    /**
+     * DOCU: Function to delete session of the user. <br/>
+     * Triggered: When the logout link is clicked. <br/>
+     * Last Updated Date: December 13, 2022.
+     * @async
+     * @function
+     * @author Aaron Aco
+     */
     logout = async () => {
         delete this.#req.session.user;
         this.#res.redirect("/");

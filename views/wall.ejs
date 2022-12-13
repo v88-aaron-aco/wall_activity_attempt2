@@ -35,10 +35,17 @@
         </form>
         <ul>
             <% for(let comment_index in comments){ 
-                let comment = comments[comment_index]; %>
+                let comment = comments[comment_index]; 
+                console.log(comment)%>
             <li>
                 <h3><%= comment.full_name %> - <%= comment.created_at %></h3>
                 <p><%= comment.comment %></p>
+                <% if(user_data.uid === comment.user_id){ %>
+                <form action="deleteComment" method="post">
+                    <input type="hidden" name="comment_id" value="<%= comment.comment_id %>">
+                    <input type="submit" value="Delete Comment">
+                </form>
+                <% } %>
             </li>
             <% } %>
         </ul>

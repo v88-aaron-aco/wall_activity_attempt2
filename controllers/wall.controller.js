@@ -61,10 +61,21 @@ class WallController {
         this.#res.redirect("/wall");
     }
 
-    // deleteComment = async () => {
-    //     let delete_comment = await Comment.delete(this.#req.body);
-    //     this.#res.redirect("/wall");
-    // }
+    deleteComment = async () => {
+        let post = new Post();
+        let delete_comment = await post.deleteComment(this.#req.body);
+        if(delete_comment.status){
+            this.#req.session.alert =  {
+                title: "Success! Your comment has been deleted!",
+                message: null};
+        }else{
+            this.#req.session.alert =  {
+                title: delete_comment.error,
+                message: delete_comment.result};
+        }
+        this.#req.session.save();
+        this.#res.redirect("/wall");
+    }
 
     // deleteMessage = async () => {
     //     let delete_message = await Message.delete(this.#req.body);

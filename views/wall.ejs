@@ -23,17 +23,17 @@
     <li>
         <h3><%= post.full_name %> - <%= post.created_at %></h3>
         <p><%= post.message %></p>
+        <form action="createComment" method="post">
+            <input type="hidden" name="message_id" value="<%= post.message_id%>">
+            <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Write a comment."></textarea>
+            <input type="submit" value="Post Comment">
+        </form>
         <ul>
             <% for(let comment_index in comments){ 
                 let comment = comments[comment_index]; %>
             <li>
                 <h3><%= comment.full_name %> - <%= comment.created_at %></h3>
                 <p><%= comment.comment %></p>
-                <form action="createComment" method="post">
-                    <input type="hidden" name="message_id" value="<%= post.message_id%>">
-                    <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Write a comment."></textarea>
-                    <input type="submit" value="Post Comment">
-                </form>
             </li>
             <% } %>
         </ul>

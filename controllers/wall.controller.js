@@ -26,15 +26,16 @@ class WallController {
         this.#res.render("wall.ejs" , {user_data : user_data, posts : posts});
     }
     createMessage = async () => {
-        let post = new Post()
+        let post = new Post();
         let create_message = await post.create(this.#req.session.user.uid, this.#req.body);
         this.#res.redirect("/wall");
     }
 
-    // createComment = async () => {
-    //     let create_comment = await Comment.create(this.#req.session.userid, this.#req.body);
-    //     this.#res.redirect("/wall");
-    // }
+    createComment = async () => {
+        let post = new Post();
+        let create_comment = await post.reply(this.#req.session.user.uid, this.#req.body);
+        this.#res.redirect("/wall");
+    }
 
     // deleteComment = async () => {
     //     let delete_comment = await Comment.delete(this.#req.body);

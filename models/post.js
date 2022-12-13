@@ -41,6 +41,20 @@ class Post{
         return response_data; 
     }
 
+     async reply (user_id,{message_id,comment}) {
+        let response_data = { status: false, result: null, error: null };
+        let query = Mysql.format(`
+                INSERT INTO comments(user_id,message_id, comment, created_at, updated_at)
+                    VALUES(?,?,?,NOW(),NOW())`, [
+                        user_id,
+                        message_id, 
+                        comment
+                    ]);
+        response_data = await DBConnection.executeQuery(query);
+
+        return response_data; 
+    }
+
     // static async delete ({message_id}) {
     //     let response_data = { status: false, result: null, error: null };
     //     let query = Mysql.format(`
